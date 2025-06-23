@@ -38,5 +38,5 @@ jobs:
         run: |
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
             -d POC -s public \
-            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -P 443 \
+            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
             -f sql/views/stg_orders.sql
