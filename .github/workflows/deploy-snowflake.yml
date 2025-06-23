@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target_schema:
-        description: 'Schema de destino (ex: public, qa, prod)'
+        description: 'Schema de destino (ex: public, qa, prd)'
         required: true
         default: 'public'
 
