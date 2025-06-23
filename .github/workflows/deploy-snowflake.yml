@@ -14,11 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Instalar dependências do sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libaio1 libncurses5
+
       - name: Instalar SnowSQL
         run: |
           set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          bash snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql
+          bash -x snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql
           echo 'export PATH=$PATH:/home/runner/.snowsql/bin' >> $GITHUB_ENV
 
       - name: Executar script no Snowflake
