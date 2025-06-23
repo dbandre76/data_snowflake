@@ -30,7 +30,7 @@ jobs:
       - name: Verificar instalação do SnowSQL
         run: which snowsql && snowsql -v
 
-      - name: Executar script no Snowflake
+      - name: Executar script no schema PUBLIC
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
           SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
@@ -38,5 +38,16 @@ jobs:
         run: |
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
             -d POC -s public \
+            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
+            -f sql/views/stg_orders.sql
+
+      - name: Executar script no schema QA
+        env:
+          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+        run: |
+          snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+            -d POC -s QA \
             -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
             -f sql/views/stg_orders.sql

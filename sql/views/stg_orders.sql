@@ -1,5 +1,4 @@
----create or replace view identifier('POC.' || $TARGET_SCHEMA || '.stg_orders') as (
-create or replace view POC.public.stg_orders as (
+create or replace view stg_orders as (
   with orders as (
     select 
       o.order_id,
@@ -12,8 +11,8 @@ create or replace view POC.public.stg_orders as (
       od.quantity,
       od.discount,
       o.freight
-    from POC.public.orders o
-    inner join POC.public.orders_details od 
+    from public.orders o
+    inner join public.orders_details od 
       on o.order_id = od.order_id
   )
   select
