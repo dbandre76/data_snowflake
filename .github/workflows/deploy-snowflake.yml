@@ -28,6 +28,11 @@ jobs:
       - name: Adicionar SnowSQL ao PATH
         run: echo "/home/runner/.snowsql/bin" >> $GITHUB_PATH
 
+      - name: Verificar instalação do SnowSQL
+        run: |
+          ls -l /home/runner/.snowsql
+          ls -l /home/runner/.snowsql/bin || true
+
       - name: Executar script no Snowflake
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
