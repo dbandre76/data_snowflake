@@ -11,14 +11,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-22.04
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Instalar SnowSQL
         run: |
-          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          bash snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql || (cat snowsql_install.log && exit 1)
-          echo 'export PATH=$PATH:/home/runner/.snowsql/bin' >> $GITHUB_ENV
+          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.24-linux_x86_64.bash
+          bash snowsql-1.2.24-linux_x86_64.bash -y
+          echo "${HOME}/.snowsql" >> $GITHUB_PATH
 
       - name: Executar script no Snowflake
         env:
@@ -26,6 +27,9 @@ jobs:
           SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
           SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
         run: |
-          snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER -p $SNOWSQL_PWD \
+          snowsql \
+            -a $SNOWSQL_ACCOUNT \
+            -u $SNOWSQL_USER \
+            -p $SNOWSQL_PWD \
             -D TARGET_SCHEMA=${{ github.event.inputs.target_schema }} \
-            -f poc-snow/sql/views/stg_orders.sql 
+            -f poc-snow/sql/views/stg_orders.sql
