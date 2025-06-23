@@ -23,15 +23,15 @@ jobs:
         run: |
           set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          SNOWSQL_DEST=/home/runner/.snowsql bash snowsql-1.4.1-linux_x86_64.bash -b || (ls -l && cat snowsql_install.log || true)
+          SNOWSQL_DEST=$HOME/.snowsql bash snowsql-1.4.1-linux_x86_64.bash -b || (ls -l && cat snowsql_install.log || true)
 
       - name: Adicionar SnowSQL ao PATH
-        run: echo "/home/runner/.snowsql/bin" >> $GITHUB_PATH
+        run: echo "$HOME/.snowsql/bin" >> $GITHUB_PATH
 
       - name: Verificar instalação do SnowSQL
         run: |
-          ls -l /home/runner/.snowsql
-          ls -l /home/runner/.snowsql/bin || true
+          ls -l $HOME/.snowsql
+          ls -l $HOME/.snowsql/bin || true
 
       - name: Executar script no Snowflake
         env:
