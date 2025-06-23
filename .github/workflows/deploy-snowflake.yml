@@ -24,7 +24,9 @@ jobs:
           set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
           SNOWSQL_DEST=/home/runner/.snowsql bash snowsql-1.4.1-linux_x86_64.bash -b || (ls -l && cat snowsql_install.log || true)
-          echo 'export PATH=$PATH:/home/runner/.snowsql/bin' >> $GITHUB_ENV
+
+      - name: Adicionar SnowSQL ao PATH
+        run: echo "/home/runner/.snowsql/bin" >> $GITHUB_PATH
 
       - name: Executar script no Snowflake
         env:
