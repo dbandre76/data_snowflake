@@ -23,7 +23,7 @@ jobs:
         run: |
           set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          bash -x snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql
+          SNOWSQL_DEST=/home/runner/.snowsql bash snowsql-1.4.1-linux_x86_64.bash -b
           echo 'export PATH=$PATH:/home/runner/.snowsql/bin' >> $GITHUB_ENV
 
       - name: Executar script no Snowflake
