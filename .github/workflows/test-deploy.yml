@@ -1,4 +1,4 @@
-name: Deploy Snowflake View
+name: Test Snowflake View
 
 on:
   workflow_dispatch:
@@ -10,18 +10,23 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
 
-      - name: Instalar SnowSQL via instalador oficial
+      - name: Baixar instalador do SnowSQL
         run: |
-          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-linux_x86_64.bash
-          bash snowsql-linux_x86_64.bash -y --no-prompt
+          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.27-linux_x86_64.bash
+
+      - name: Instalar SnowSQL
+        run: |
+          SNOWSQL_DEST=$HOME/.snowsql
+          bash snowsql-1.2.27-linux_x86_64.bash -y
           echo "$HOME/.snowsql/bin" >> $GITHUB_PATH
 
-      - name: Verificar versão do SnowSQL
+      - name: Verificar instalação do SnowSQL
         run: snowsql -v
 
       - name: Executar script no Snowflake
