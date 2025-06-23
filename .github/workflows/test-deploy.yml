@@ -1,4 +1,4 @@
-name: Deploy Snowflake View
+name: Deploy Test
 
 on:
   workflow_dispatch:
@@ -15,11 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Instalar SnowSQL
+      - name: Baixar e configurar SnowSQL
         run: |
-          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.24-linux_x86_64.bash
-          bash snowsql-1.2.24-linux_x86_64.bash -y
-          echo "${HOME}/.snowsql" >> $GITHUB_PATH
+          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.24-linux_x86_64.tar.gz
+          mkdir -p $HOME/snowsql
+          tar -xzf snowsql-1.2.24-linux_x86_64.tar.gz -C $HOME/snowsql --strip-components=1
+          chmod +x $HOME/snowsql/bin/snowsql
+          echo "$HOME/snowsql/bin" >> $GITHUB_PATH
 
       - name: Executar script no Snowflake
         env:
