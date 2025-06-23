@@ -16,8 +16,9 @@ jobs:
 
       - name: Instalar SnowSQL
         run: |
+          set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          bash snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql || (cat snowsql_install.log && exit 1)
+          bash snowsql-1.4.1-linux_x86_64.bash -b -d /home/runner/.snowsql
           echo 'export PATH=$PATH:/home/runner/.snowsql/bin' >> $GITHUB_ENV
 
       - name: Executar script no Snowflake
