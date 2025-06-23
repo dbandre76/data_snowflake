@@ -19,11 +19,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libaio1 libncurses6
 
-      - name: Instalar SnowSQL
+      - name: Instalar SnowSQL (modo interativo para diagnóstico)
         run: |
           set -x
           wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          SNOWSQL_DEST=$HOME/.snowsql bash snowsql-1.4.1-linux_x86_64.bash -b || (ls -l && cat snowsql_install.log || true)
+          SNOWSQL_DEST=$HOME/.snowsql bash snowsql-1.4.1-linux_x86_64.bash || (ls -l && cat snowsql_install.log || true)
 
       - name: Adicionar SnowSQL ao PATH
         run: echo "$HOME/.snowsql/bin" >> $GITHUB_PATH
