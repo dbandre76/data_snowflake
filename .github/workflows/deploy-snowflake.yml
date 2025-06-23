@@ -17,21 +17,18 @@ jobs:
       - name: Instalar dependências do sistema
         run: |
           sudo apt-get update
-          sudo apt-get install -y libaio1 libncurses6
+          sudo apt-get install -y libaio1 libncurses6 alien
 
-      - name: Instalar SnowSQL (modo interativo para diagnóstico)
+      - name: Baixar e instalar SnowSQL via RPM
         run: |
-          set -x
-          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowsql-1.4.1-linux_x86_64.bash
-          SNOWSQL_DEST=$HOME/.snowsql bash snowsql-1.4.1-linux_x86_64.bash || (ls -l && cat snowsql_install.log || true)
+          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
+          sudo alien -i snowflake-snowsql-1.4.1-1.x86_64.rpm
 
       - name: Adicionar SnowSQL ao PATH
-        run: echo "$HOME/.snowsql/bin" >> $GITHUB_PATH
+        run: echo "/usr/bin" >> $GITHUB_PATH
 
       - name: Verificar instalação do SnowSQL
-        run: |
-          ls -l $HOME/.snowsql
-          ls -l $HOME/.snowsql/bin || true
+        run: which snowsql && snowsql -v
 
       - name: Executar script no Snowflake
         env:
