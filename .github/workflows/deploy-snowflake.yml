@@ -37,5 +37,6 @@ jobs:
           SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
         run: |
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER -p $SNOWSQL_PWD \
-            -D TARGET_SCHEMA=${{ github.event.inputs.target_schema }} \
-            -f poc-snow/sql/views/stg_orders.sql 
+            -d POC -s public \
+            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -P 443 \
+            -f sql/views/stg_orders.sql
