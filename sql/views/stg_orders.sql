@@ -1,4 +1,4 @@
---- Create view with data of Orders resumed and details
+--- Create view with data of Orders
 create or replace view stg_orders as (
   with orders as (
     select 
