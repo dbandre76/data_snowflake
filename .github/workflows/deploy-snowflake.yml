@@ -50,7 +50,7 @@ jobs:
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
             -d POC -s QA \
             -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-            -f sql/views/stg_orders.
+            -f sql/views/stg_orders.sql
 
       - name: Executar script no schema QA
         env:
@@ -61,7 +61,7 @@ jobs:
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
             -d POC -s QA \
             -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-            -f sql/views/stg_orders.
+            -f sql/views/stg_orders.sql
       - name: Executar script no schema QA
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
