@@ -10,12 +10,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  dev_qa:
+  public:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        schema: [public, QA]
     steps:
       - uses: actions/checkout@v3
 
@@ -35,7 +32,7 @@ jobs:
       - name: Check SnowSQL installation
         run: which snowsql && snowsql -v
 
-      - name: Run changed SQL scripts
+      - name: Run changed SQL scripts on PUBLIC
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
           SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
@@ -52,9 +49,56 @@ jobs:
             exit 0
           fi
           for file in $MODIFIED_FILES; do
-            echo "Running $file on schema ${{ matrix.schema }}"
+            echo "Running $file on schema public"
             snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-              -d POC -s ${{ matrix.schema }} \
+              -d POC -s public \
+              -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
+              -f $file
+          done
+
+  qa:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    needs: public
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libaio1 libncurses6 alien
+
+      - name: Download and install SnowSQL via RPM
+        run: |
+          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
+          sudo alien -i snowflake-snowsql-1.4.1-1.x86_64.rpm
+
+      - name: Add SnowSQL to PATH
+        run: echo "/usr/bin" >> $GITHUB_PATH
+
+      - name: Check SnowSQL installation
+        run: which snowsql && snowsql -v
+
+      - name: Run changed SQL scripts on QA
+        env:
+          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+        run: |
+          set -e
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            MODIFIED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.sql$' || true)
+          else
+            MODIFIED_FILES=$(git show --pretty="" --name-only HEAD | grep '\.sql$' || true)
+          fi
+          if [ -z "$MODIFIED_FILES" ]; then
+            echo "No .sql files changed."
+            exit 0
+          fi
+          for file in $MODIFIED_FILES; do
+            echo "Running $file on schema QA"
+            snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+              -d POC -s QA \
               -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
               -f $file
           done
