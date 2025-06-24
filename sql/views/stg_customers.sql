@@ -1,3 +1,4 @@
+-- Create view stg_customers
 CREATE VIEW STG_CUSTOMERS AS 
 select 
     UPPER(customer_id) AS CUSTOMER_ID,

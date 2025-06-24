@@ -1,4 +1,4 @@
---- Create view with data of Order
+---Create view with data of Order.
 create or replace view stg_orders as (
   with orders as (
     select 
