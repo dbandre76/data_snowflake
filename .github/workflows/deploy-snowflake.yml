@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  public:
+  dev:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-22.04
     steps:
@@ -32,7 +32,7 @@ jobs:
       - name: Check SnowSQL installation
         run: which snowsql && snowsql -v
 
-      - name: Run changed SQL scripts on PUBLIC
+      - name: Run changed SQL scripts on DEV
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
           SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
@@ -49,9 +49,9 @@ jobs:
             exit 0
           fi
           for file in $MODIFIED_FILES; do
-            echo "Running $file on schema public"
+            echo "Running $file on schema DEV"
             snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-              -d POC -s public \
+              -d POC -s DEV \
               -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
               -f $file
           done
@@ -59,7 +59,7 @@ jobs:
   qa:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-22.04
-    needs: public
+    needs: dev
     steps:
       - uses: actions/checkout@v3
 
