@@ -2,15 +2,13 @@ name: Deploy Snowflake View
 
 on:
   workflow_dispatch:
-    inputs:
-      target_schema:
-        description: 'Schema de destino (ex: public, qa, prd)'
-        required: true
-        default: 'public'
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        schema: [public, QA, PRD]
     steps:
       - uses: actions/checkout@v3
 
@@ -30,45 +28,13 @@ jobs:
       - name: Verificar instalação do SnowSQL
         run: which snowsql && snowsql -v
 
-      - name: Executar script no schema PUBLIC
+      - name: Executar script no schema ${{ matrix.schema }}
         env:
           SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
           SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
           SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
         run: |
           snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-            -d POC -s public \
+            -d POC -s ${{ matrix.schema }} \
             -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
             -f sql/views/stg_orders.sql
-
-      - name: Executar script no schema QA
-        env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
-        run: |
-          snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-            -d POC -s QA \
-            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-            -f sql/views/stg_orders.sql
-
-      - name: Executar script no schema QA
-        env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
-        run: |
-          snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-            -d POC -s QA \
-            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-            -f sql/views/stg_orders.sql
-      - name: Executar script no schema QA
-        env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
-        run: |
-          snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
-            -d POC -s PRD \
-            -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-            -f sql/views/stg_orders.
