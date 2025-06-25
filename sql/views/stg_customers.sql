@@ -1,4 +1,4 @@
--- Read from Parquet files in S3 Bucket
+-- Read from Parquet files in S3 Bucket...
 CREATE OR REPLACE VIEW stg_customers AS
 SELECT
   upper($1:"customer_id")  AS customer_id,
