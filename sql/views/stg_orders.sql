@@ -1,23 +1,16 @@
----Create view with data of Order.
-create or replace view stg_orders as (
-  with orders as (
-    select 
-      o.order_id,
-      o.order_date,
-      o.required_date,
-      o.shipped_date,
-      o.ship_country,
-      od.product_id,
-      od.unit_price,
-      od.quantity,
-      od.discount,
-      o.freight
-    from public.orders o
-    inner join public.orders_details od 
-      on o.order_id = od.order_id
-  )
-  select
-    o.*,
-    o.unit_price * quantity as Total
-  from orders o 
-);
+CREATE OR REPLACE VIEW stg_orders AS
+SELECT
+  $1:"order_id"::NUMBER                AS order_id,
+  UPPER($1:"customer_id"::STRING)      AS customer_id,
+  $1:"employee_id"::NUMBER             AS employee_id,
+  $1:"order_date"::TIMESTAMP_NTZ       AS order_date,
+  $1:"required_date"::TIMESTAMP_NTZ    AS required_date,
+  $1:"shipped_date"::TIMESTAMP_NTZ     AS shipped_date,
+  $1:"ship_via"::NUMBER                AS ship_via,
+  $1:"freight"::FLOAT                  AS freight,
+  UPPER($1:"ship_name"::STRING)        AS ship_name,
+  UPPER($1:"ship_address"::STRING)     AS ship_address,
+  UPPER($1:"ship_city"::STRING)        AS ship_city,
+  UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
+  UPPER($1:"ship_country"::STRING)     AS ship_country
+FROM orders;
