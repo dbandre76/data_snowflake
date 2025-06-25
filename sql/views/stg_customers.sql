@@ -1,14 +1,14 @@
--- Create view stg_customers
-CREATE VIEW STG_CUSTOMERS AS 
-select 
-    UPPER(customer_id) AS CUSTOMER_ID,
-    UPPER(company_name) AS COMPANY_NAME,
-    UPPER(contact_name) AS CONTACT_NAME,
-    UPPER(contact_title) AS CONTACT_TITLE,
-    UPPER(address) ADDRESS,
-    UPPER(city) AS CITY,
-    UPPER(postal_code) AS POSTAL_CODE,
-    UPPER(country) AS COUNTRY,
-    UPPER(phone) AS PHONE,
-    UPPER(fax) AS FAX
-from public.customers
+-- Read from Parquet files in S3 Bucket
+CREATE OR REPLACE VIEW stg_customers AS
+SELECT
+  upper($1:"customer_id")  AS customer_id,
+  upper($1:"company_name")       AS company_name,
+  upper($1:"contact_name")       AS contact_name,
+  upper($1:"contact_title")      AS contact_title,
+  upper($1:"address")            AS address,
+  upper($1:"city")               AS city,
+  upper($1:"postal_code")        AS postal_code,
+  upper($1:"country")            AS country,
+  upper($1:"phone")              AS phone,
+  upper($1:"fax")                AS fax
+FROM POC.PUBLIC.customers;
