@@ -13,4 +13,4 @@ SELECT
   UPPER($1:"ship_city"::STRING)        AS ship_city,
   UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
   UPPER($1:"ship_country"::STRING)     AS ship_country
-FROM orders;
+FROM POC.PUBLIC.orders;

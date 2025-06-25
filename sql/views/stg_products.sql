@@ -10,4 +10,4 @@ SELECT
   $1:"units_on_order"::NUMBER       AS units_on_order,
   $1:"reorder_level"::NUMBER        AS reorder_level,
   $1:"discontinued"::NUMBER         AS discontinued
-FROM products;
+FROM POC.PUBLIC.products;
