@@ -50,10 +50,23 @@ jobs:
           fi
           for file in $MODIFIED_FILES; do
             echo "Running $file on schema DEV"
-            snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+            OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s DEV \
               -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-              -f $file
+              -f $file)
+            echo "$OUTPUT"
+            if [[ "$file" == sql/procedures/* ]]; then
+              PROC_NAME=$(echo "$OUTPUT" | grep -oP 'Function \K[^ ]+' | head -1)
+              if [[ -n "$PROC_NAME" ]]; then
+                echo "Calling procedure $PROC_NAME on schema DEV"
+                snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+                  -d POC -s DEV \
+                  -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
+                  -q "CALL $PROC_NAME();"
+              else
+                echo "Could not extract the procedure name from the SnowSQL output for file $file"
+              fi
+            fi
           done
 
   qa:
@@ -97,10 +110,23 @@ jobs:
           fi
           for file in $MODIFIED_FILES; do
             echo "Running $file on schema QA"
-            snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+            OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s QA \
               -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-              -f $file
+              -f $file)
+            echo "$OUTPUT"
+            if [[ "$file" == sql/procedures/* ]]; then
+              PROC_NAME=$(echo "$OUTPUT" | grep -oP 'Function \K[^ ]+' | head -1)
+              if [[ -n "$PROC_NAME" ]]; then
+                echo "Calling procedure $PROC_NAME on schema QA"
+                snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+                  -d POC -s QA \
+                  -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
+                  -q "CALL $PROC_NAME();"
+              else
+                echo "Could not extract the procedure name from the SnowSQL output for file $file"
+              fi
+            fi
           done
 
   prod:
@@ -143,8 +169,21 @@ jobs:
           fi
           for file in $MODIFIED_FILES; do
             echo "Running $file on schema ${{ env.SCHEMA_PRD }}"
-            snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+            OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s ${{ env.SCHEMA_PRD }} \
               -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
-              -f $file
+              -f $file)
+            echo "$OUTPUT"
+            if [[ "$file" == sql/procedures/* ]]; then
+              PROC_NAME=$(echo "$OUTPUT" | grep -oP 'Function \K[^ ]+' | head -1)
+              if [[ -n "$PROC_NAME" ]]; then
+                echo "Calling procedure $PROC_NAME on schema ${{ env.SCHEMA_PRD }}"
+                snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
+                  -d POC -s ${{ env.SCHEMA_PRD }} \
+                  -h "$SNOWSQL_ACCOUNT.snowflakecomputing.com" -p 443 \
+                  -q "CALL $PROC_NAME();"
+              else
+                echo "Could not extract the procedure name from the SnowSQL output for file $file"
+              fi
+            fi
           done
