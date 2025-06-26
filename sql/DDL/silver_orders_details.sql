@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS silver_orders_details (
   product_id    NUMBER,
   unit_price    FLOAT,
   quantity      NUMBER,
-  discount      FLOAT
+  discount      FLOAT,
+  total         FLOAT
 );
