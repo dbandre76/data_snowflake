@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS silver_orders_details (
   unit_price    FLOAT,
   quantity      NUMBER,
   discount      FLOAT,
-  total         FLOAT
+  total         FLOAT  --- add new field
 );
