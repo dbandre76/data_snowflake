@@ -23,7 +23,7 @@ jobs:
 
       - name: Download and install SnowSQL via RPM
         run: |
-          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
+          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.4/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
           sudo alien -i snowflake-snowsql-1.4.1-1.x86_64.rpm
 
       - name: Add SnowSQL to PATH
@@ -83,7 +83,7 @@ jobs:
 
       - name: Download and install SnowSQL via RPM
         run: |
-          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.3/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
+          wget https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.4/linux_x86_64/snowflake-snowsql-1.4.1-1.x86_64.rpm
           sudo alien -i snowflake-snowsql-1.4.1-1.x86_64.rpm
 
       - name: Add SnowSQL to PATH
