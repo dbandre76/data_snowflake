@@ -1,4 +1,4 @@
-
+--- Procedure to load the gold fact orders table
 CREATE OR REPLACE PROCEDURE load_gold_fact_orders()
 RETURNS STRING
 LANGUAGE SQL
