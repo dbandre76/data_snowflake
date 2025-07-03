@@ -1,4 +1,4 @@
-
+-- Test Customer Table
 CREATE OR REPLACE PROCEDURE load_silver_customers()
 RETURNS STRING
 LANGUAGE SQL
