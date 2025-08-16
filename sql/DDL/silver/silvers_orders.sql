@@ -1,3 +1,4 @@
+-- SILVER_ORDERS
 CREATE TABLE IF NOT EXISTS silver_orders (
   order_id           NUMBER,
   customer_id        STRING,

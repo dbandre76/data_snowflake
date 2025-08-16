@@ -19,7 +19,7 @@ BEGIN
         $1:"units_on_order"::NUMBER       AS units_on_order,
         $1:"reorder_level"::NUMBER        AS reorder_level,
         $1:"discontinued"::NUMBER         AS discontinued
-    FROM POC.PUBLIC.products;
+    from bronze_products;
 
 RETURN 'Load Siver Products table successfully';
 

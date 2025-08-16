@@ -1,4 +1,4 @@
-
+-- Test Customer Table
 CREATE OR REPLACE PROCEDURE load_silver_customers()
 RETURNS STRING
 LANGUAGE SQL
@@ -19,7 +19,7 @@ BEGIN
     upper($1:"country")            AS country,
     upper($1:"phone")              AS phone,
     upper($1:"fax")                AS fax
-    FROM POC.PUBLIC.customers;
+from bronze_customers;
 
     RETURN 'Load Siver Customers table successfully';
 END;

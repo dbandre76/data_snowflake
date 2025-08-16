@@ -1,4 +1,5 @@
 
+-- Procedure: Orders Silver
 CREATE OR REPLACE PROCEDURE load_silver_orders()
 RETURNS STRING
 LANGUAGE SQL
@@ -22,7 +23,7 @@ BEGIN
         UPPER($1:"ship_city"::STRING)        AS ship_city,
         UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
         UPPER($1:"ship_country"::STRING)     AS ship_country
-    FROM POC.PUBLIC.orders;
+FROM bronze_orders;
 
     RETURN 'Load Siver Orders table successfully';
 END;

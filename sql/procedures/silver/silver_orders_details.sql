@@ -14,7 +14,7 @@ BEGIN
         $1:"quantity"::NUMBER     AS quantity,
         $1:"discount"::FLOAT      AS discount,
         ($1:"quantity"::NUMBER * $1:"unit_price"::FLOAT) AS total
-    FROM POC.PUBLIC.orders_details;
+    from bronze_orders_details;
 
     RETURN 'Load Siver Orders Details table successfully';
 END
