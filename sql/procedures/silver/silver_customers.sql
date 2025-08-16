@@ -19,7 +19,8 @@ BEGIN
     upper($1:"country")            AS country,
     upper($1:"phone")              AS phone,
     upper($1:"fax")                AS fax
-    FROM POC.PUBLIC.customers;
+from @NORTH/customers/customers
+(FILE_FORMAT => 'PARQUET_FORMAT');
 
     RETURN 'Load Siver Customers table successfully';
 END;
