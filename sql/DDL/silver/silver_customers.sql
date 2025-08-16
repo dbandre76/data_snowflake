@@ -1,3 +1,4 @@
+-- SILVER_CUSTOMERS
 CREATE TABLE IF NOT EXISTS silver_customers (
   customer_id   STRING,
   company_name  STRING,
