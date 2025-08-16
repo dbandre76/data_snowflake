@@ -1,4 +1,5 @@
 
+-- Procedure: Orders Silver
 CREATE OR REPLACE PROCEDURE load_silver_orders()
 RETURNS STRING
 LANGUAGE SQL
