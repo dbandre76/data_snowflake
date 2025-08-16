@@ -14,8 +14,7 @@ BEGIN
         $1:"quantity"::NUMBER     AS quantity,
         $1:"discount"::FLOAT      AS discount,
         ($1:"quantity"::NUMBER * $1:"unit_price"::FLOAT) AS total
-    from @NORTH/orders_details
-    (FILE_FORMAT => 'PARQUET_FORMAT');
+    from bronze_orders_details;
 
     RETURN 'Load Siver Orders Details table successfully';
 END
