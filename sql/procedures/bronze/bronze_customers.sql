@@ -9,7 +9,7 @@ BEGIN
 
     INSERT INTO bronze_customers
 SELECT 
-    CAST($1 AS VARIANT) as raw,                   -- ← CAST para VARIANT
+    CAST($1 AS VARIANT) as raw,                   -- CAST para VARIANT
     metadata$filename as filename,                     
     CURRENT_TIMESTAMP() as created_at                  
 FROM @POC.PUBLIC.NORTH/customers  (FILE_FORMAT => 'PARQUET_FORMAT');
