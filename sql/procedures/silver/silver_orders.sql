@@ -24,7 +24,6 @@ BEGIN
         UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
         UPPER($1:"ship_country"::STRING)     AS ship_country
 FROM bronze_orders;
-
     RETURN 'Load Siver Orders table successfully';
 END;
 $$;
