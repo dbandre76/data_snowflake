@@ -13,6 +13,6 @@ SELECT
     metadata$filename as filename,                     
     CURRENT_TIMESTAMP() as created_at                  
 FROM @POC.PUBLIC.NORTH/products (FILE_FORMAT => 'PARQUET_FORMAT');
-    RETURN 'Load Bronze Customers table successfully';
+    RETURN 'Load Bronze products table successfully';
 END;
 $$;
