@@ -1,4 +1,3 @@
--- SILVER_CUSTOMERS
 CREATE TABLE IF NOT EXISTS silver_customers (
   customer_id   STRING,
   company_name  STRING,
@@ -9,5 +8,6 @@ CREATE TABLE IF NOT EXISTS silver_customers (
   postal_code   STRING,
   country       STRING,
   phone         STRING,
-  fax           STRING
+  fax           STRING,
+  created_at    TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
 );
