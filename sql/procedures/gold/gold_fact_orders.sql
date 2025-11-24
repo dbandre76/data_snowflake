@@ -105,6 +105,6 @@ WHEN NOT MATCHED THEN
     ) 
 ;
 
-    RETURN 'Load Gold Facto Orders table successfully';
+    RETURN 'Load Gold Fact Orders table successfully';
 END;
 $$;

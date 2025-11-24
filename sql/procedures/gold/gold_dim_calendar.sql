@@ -28,7 +28,7 @@ FROM TABLE(GENERATOR(ROWCOUNT=>10000))
 
 ;
 
-Return 'Dimensão de Calendário gerada';
+Return 'Load Gold Dim Calendar table successfully';
 
 END 
 $$;

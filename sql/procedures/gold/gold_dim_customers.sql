@@ -76,8 +76,11 @@ BEGIN
             s.hash_diff
         );
 
-RETURN 'Procedure carregada com sucesso';
+RETURN 'Load Gold Dim Customers table successfully';
 
 END;
 
 $$;
+
+
+  

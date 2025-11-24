@@ -82,7 +82,11 @@ update set
     )
 ;
 
-    Return 'Dimensão de Produtos Carregada com sucesso';
+    Return 'Load Gold Dim Products table successfully';
 
     END;
     $$;
+
+
+
+  
