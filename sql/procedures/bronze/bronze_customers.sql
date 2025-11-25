@@ -5,7 +5,7 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE BRONZE_ORDERS_DETAILS;
+    TRUNCATE TABLE bronze_customers;
 
     INSERT INTO bronze_customers
         SELECT 
