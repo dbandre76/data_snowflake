@@ -4,9 +4,9 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE SILVER_PRODUCTS;
+    TRUNCATE TABLE silver_products;
 
-    INSERT INTO SILVER_PRODUCTS
+    INSERT INTO silver_products
 
     SELECT
         $1:"product_id"::NUMBER           AS product_id,
@@ -22,7 +22,7 @@ BEGIN
         current_timestamp as created_at
     from bronze_products;
 
-RETURN 'Load Siver Products table successfully';
+RETURN 'Load Silver Products table successfully';
 
-END
+END;
 $$;

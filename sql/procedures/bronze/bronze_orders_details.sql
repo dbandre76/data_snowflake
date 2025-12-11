@@ -1,11 +1,11 @@
--- Test Customer Table
+
 CREATE OR REPLACE PROCEDURE load_bronze_orders_details()
 RETURNS STRING
 LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE BRONZE_ORDERS_DETAILS;
+    TRUNCATE TABLE bronze_orders_details;
 
     INSERT INTO bronze_orders_details
 SELECT 
@@ -13,6 +13,6 @@ SELECT
     metadata$filename as filename,                     
     CURRENT_TIMESTAMP() as created_at                  
 FROM @POC.PUBLIC.NORTH/orders_details (FILE_FORMAT => 'PARQUET_FORMAT');
-    RETURN 'Load Bronze Customers table successfully';
+    RETURN 'Load Bronze Orders Details table successfully';
 END;
 $$;

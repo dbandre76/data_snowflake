@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE silver_products (
+CREATE TABLE IF NOT EXISTS silver_products (
   product_id         NUMBER,
   product_name       STRING,
   supplier_id        NUMBER,

@@ -1,11 +1,11 @@
--- Test Customer Table
+
 CREATE OR REPLACE PROCEDURE load_bronze_orders()
 RETURNS STRING
 LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE BRONZE_ORDERS;
+    TRUNCATE TABLE bronze_orders;
 
     INSERT INTO bronze_orders
 SELECT 

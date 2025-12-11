@@ -46,8 +46,8 @@ USING (
             on o.shipped_date = dc_shipped.date_key
     )
     select *,
-        total * discount as TotalDiscount,
-        total - (total * discount) as TotalLiquid
+        total * discount as total_discount,
+        total - (total * discount) as total_liquid
     from fact
 ) AS source
 ON target.order_id = source.order_id 
@@ -63,8 +63,8 @@ WHEN MATCHED AND target.hash_diff <> source.hash_diff THEN
         target.quantity = source.quantity,
         target.discount = source.discount,
         target.total = source.total,
-        target.TotalDiscount = source.TotalDiscount,
-        target.TotalLiquid = source.TotalLiquid,
+        target.total_discount = source.total_discount,
+        target.total_liquid = source.total_liquid,
         target.hash_diff = source.hash_diff,
         target.last_updated = CURRENT_TIMESTAMP()
 
@@ -80,8 +80,8 @@ WHEN NOT MATCHED THEN
         quantity,
         discount,
         total,
-        TotalDiscount,
-        TotalLiquid,
+        total_discount,
+        total_liquid,
         hash_diff,
         created_date,
         last_updated
@@ -97,8 +97,8 @@ WHEN NOT MATCHED THEN
         source.quantity,
         source.discount,
         source.total,
-        source.TotalDiscount,
-        source.TotalLiquid,
+        source.total_discount,
+        source.total_liquid,
         source.hash_diff,
         CURRENT_TIMESTAMP(),
         CURRENT_TIMESTAMP()

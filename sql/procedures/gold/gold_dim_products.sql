@@ -6,20 +6,20 @@ $$
 
 BEGIN
 
-MERGE INTO gold_dim_products as  t 
-using (
- SELECT  
-        PRODUCT_ID,
-        PRODUCT_NAME,
-        SUPPLIER_ID,
-        CATEGORY_ID,
-        QUANTITY_PER_UNIT,
-        UNIT_PRICE,
-        UNITS_IN_STOCK,
-        UNITS_ON_ORDER,
-        REORDER_LEVEL,
-        DISCONTINUED,
-          MD5(
+MERGE INTO gold_dim_products AS t 
+USING (
+    SELECT  
+        product_id,
+        product_name,
+        supplier_id,
+        category_id,
+        quantity_per_unit,
+        unit_price,
+        units_in_stock,
+        units_on_order,
+        reorder_level,
+        discontinued,
+        MD5(
             NVL(product_name, '')              || '|' ||
             NVL(TO_CHAR(supplier_id), '')      || '|' ||
             NVL(TO_CHAR(category_id), '')      || '|' ||
@@ -30,54 +30,49 @@ using (
             NVL(TO_CHAR(reorder_level), '')    || '|' ||
             NVL(TO_CHAR(discontinued), '')
         ) AS hash_diff
-        FROM silver_products
+    FROM silver_products
 ) AS s
-    on t.product_id = s.product_id
+ON t.product_id = s.product_id
 
-    
-when matched and 
-t.hash_diff <> s.hash_diff then 
+WHEN MATCHED AND t.hash_diff <> s.hash_diff THEN 
+    UPDATE SET 
+        t.product_id = s.product_id,
+        t.product_name = s.product_name,
+        t.supplier_id = s.supplier_id,
+        t.category_id = s.category_id,
+        t.quantity_per_unit = s.quantity_per_unit,
+        t.unit_price = s.unit_price,
+        t.units_in_stock = s.units_in_stock,
+        t.units_on_order = s.units_on_order,
+        t.reorder_level = s.reorder_level,
+        t.discontinued = s.discontinued,
+        t.hash_diff = s.hash_diff
 
-update set 
-    t.product_id = s.product_id,
-    t.PRODUCT_NAME = s.PRODUCT_NAME,
-    t.SUPPLIER_ID = s.SUPPLIER_ID,
-    t.CATEGORY_ID = s.CATEGORY_ID,
-    t.QUANTITY_PER_UNIT = s.QUANTITY_PER_UNIT,
-    t.UNIT_PRICE = s.UNIT_PRICE,
-    t.UNITS_IN_STOCK = s.UNITS_IN_STOCK,
-    t.UNITS_ON_ORDER = s.UNITS_ON_ORDER,
-    t.REORDER_LEVEL = s.REORDER_LEVEL,
-    t.DISCONTINUED = s.DISCONTINUED,
-    t.hash_diff = s.hash_diff
-
-    when not matched then 
-    insert (
-        PRODUCT_ID,
-        PRODUCT_NAME,
-        SUPPLIER_ID,
-        CATEGORY_ID,
-        QUANTITY_PER_UNIT,
-        UNIT_PRICE,
-        UNITS_IN_STOCK,
-        UNITS_ON_ORDER,
-        REORDER_LEVEL,
-        DISCONTINUED,
+WHEN NOT MATCHED THEN 
+    INSERT (
+        product_id,
+        product_name,
+        supplier_id,
+        category_id,
+        quantity_per_unit,
+        unit_price,
+        units_in_stock,
+        units_on_order,
+        reorder_level,
+        discontinued,
         hash_diff
     )
-
-    values (
-
-     PRODUCT_ID,
-        s.PRODUCT_NAME,
-        s.SUPPLIER_ID,
-        s.CATEGORY_ID,
-        s.QUANTITY_PER_UNIT,
-        s.UNIT_PRICE,
-        s.UNITS_IN_STOCK,
-        s.UNITS_ON_ORDER,
-        s.REORDER_LEVEL,
-        s.DISCONTINUED,
+    VALUES (
+        s.product_id,
+        s.product_name,
+        s.supplier_id,
+        s.category_id,
+        s.quantity_per_unit,
+        s.unit_price,
+        s.units_in_stock,
+        s.units_on_order,
+        s.reorder_level,
+        s.discontinued,
         s.hash_diff
     )
 ;

@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS gold_fact_orders (
     quantity INTEGER NOT NULL,
     discount DECIMAL(4,2) DEFAULT 0,
     total DECIMAL(10,2) NOT NULL,
-    TotalDiscount DECIMAL(10,2) NOT NULL,
-    TotalLiquid DECIMAL(10,2) NOT NULL,
+    total_discount DECIMAL(10,2) NOT NULL,
+    total_liquid DECIMAL(10,2) NOT NULL,
     hash_diff VARCHAR(32) NOT NULL,
     created_date TIMESTAMP NOT NULL,
     last_updated TIMESTAMP NOT NULL
-    )
+);
