@@ -48,9 +48,11 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          # Sort files by layer: bronze → silver → gold
+          # Sort files by layer: bronze → silver → gold, tasks last
           ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
-            if [[ "$file" == *"/bronze/"* ]]; then
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
               echo "1:$file"
             elif [[ "$file" == *"/silver/"* ]]; then
               echo "2:$file"
@@ -120,9 +122,11 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          # Sort files by layer: bronze → silver → gold
+          # Sort files by layer: bronze → silver → gold, tasks last
           ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
-            if [[ "$file" == *"/bronze/"* ]]; then
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
               echo "1:$file"
             elif [[ "$file" == *"/silver/"* ]]; then
               echo "2:$file"
@@ -191,9 +195,11 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          # Sort files by layer: bronze → silver → gold
+          # Sort files by layer: bronze → silver → gold, tasks last
           ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
-            if [[ "$file" == *"/bronze/"* ]]; then
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
               echo "1:$file"
             elif [[ "$file" == *"/silver/"* ]]; then
               echo "2:$file"
