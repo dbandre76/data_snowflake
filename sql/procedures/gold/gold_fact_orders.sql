@@ -9,7 +9,7 @@ BEGIN
 USING (
     with fact as (
         select 
-            o.order_id,
+            TO_CHAR(o.order_id) as order_id,
             c.customer_sk,
             p.product_sk,
             dc_order.date_sk as order_date_sk,
@@ -17,7 +17,7 @@ USING (
             dc_shipped.date_sk as shipped_date_sk,
             od.unit_price,
             od.quantity,
-            od.discount,
+            NVL(od.discount, 0) as discount,
             od.quantity * od.unit_price as total,
             -- HASH para detectar mudanças
             MD5(
@@ -39,13 +39,28 @@ USING (
         left join gold_dim_products p
             on od.product_id = p.product_id
         left join gold_dim_calendar dc_order
-            on o.order_date = dc_order.date_key
+            on DATE(o.order_date) = dc_order.date_key
         left join gold_dim_calendar dc_required
-            on o.required_date = dc_required.date_key
+            on DATE(o.required_date) = dc_required.date_key
         left join gold_dim_calendar dc_shipped
-            on o.shipped_date = dc_shipped.date_key
+            on DATE(o.shipped_date) = dc_shipped.date_key
+        where c.customer_sk IS NOT NULL
+          and p.product_sk IS NOT NULL
+          and dc_order.date_sk IS NOT NULL
+          and o.order_date IS NOT NULL
     )
-    select *,
+    select 
+        order_id,
+        customer_sk,
+        product_sk,
+        order_date_sk,
+        required_date_sk,
+        shipped_date_sk,
+        unit_price,
+        quantity,
+        discount,
+        total,
+        hash_diff,
         total * discount as total_discount,
         total - (total * discount) as total_liquid
     from fact

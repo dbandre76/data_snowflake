@@ -22,7 +22,8 @@ BEGIN
         UPPER($1:"ship_address"::STRING)     AS ship_address,
         UPPER($1:"ship_city"::STRING)        AS ship_city,
         UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
-        UPPER($1:"ship_country"::STRING)     AS ship_country
+        UPPER($1:"ship_country"::STRING)     AS ship_country,
+        CURRENT_TIMESTAMP()                  AS created_at
 FROM bronze_orders;
     RETURN 'Load Silver Orders table successfully';
 END;

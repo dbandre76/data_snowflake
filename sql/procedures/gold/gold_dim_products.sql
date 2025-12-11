@@ -36,7 +36,6 @@ ON t.product_id = s.product_id
 
 WHEN MATCHED AND t.hash_diff <> s.hash_diff THEN 
     UPDATE SET 
-        t.product_id = s.product_id,
         t.product_name = s.product_name,
         t.supplier_id = s.supplier_id,
         t.category_id = s.category_id,

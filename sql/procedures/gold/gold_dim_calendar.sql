@@ -7,24 +7,37 @@ $$
 BEGIN
 
 
-create or replace table  gold_dim_calendar as 
-with date_range as (
-SELECT DATEADD(DAY, SEQ4(), (select min(order_date) from silver_orders)) AS date_key
-
-FROM TABLE(GENERATOR(ROWCOUNT=>10000))
+CREATE OR REPLACE TABLE gold_dim_calendar AS
+WITH bounds AS (
+    SELECT 
+        MIN(order_date) AS min_date,
+        MAX(order_date) AS max_date
+    FROM silver_orders
+),
+dates AS (
+    SELECT 
+        DATEADD(
+            day, 
+            seq4(),
+            b.min_date
+        ) AS date_day
+    FROM bounds b
+    CROSS JOIN TABLE(GENERATOR(ROWCOUNT => 10000)) g
+    WHERE DATEADD(day, seq4(), b.min_date) <= b.max_date
 )
- SELECT 
-    ROW_NUMBER() OVER (ORDER BY date_key) as date_sk, 
-    date_key,
-    YEAR(date_key) as year,
-    QUARTER(date_key) as quarter,
-    month(date_key) as month,
-    day(date_key) as day,
-     MONTHNAME(date_key) as month_name,
-    DAYNAME(date_key) as day_name,
-    WEEKOFYEAR(date_key) as week_number,
-    IFF(DAYNAME(date_key) IN ('Sat', 'Sun'), true, false) as is_weekend
-    from date_range
+SELECT
+    ROW_NUMBER() OVER (ORDER BY date_day) AS date_sk,
+    date_day AS date_key,
+    YEAR(date_day) AS year,
+    QUARTER(date_day) AS quarter,
+    MONTH(date_day) AS month,
+    DAY(date_day) AS day,
+    MONTHNAME(date_day) AS month_name,
+    DAYNAME(date_day) AS day_name,
+    WEEKOFYEAR(date_day) AS week_number,
+    IFF(DAYNAME(date_day) IN ('Sat', 'Sun'), true, false) AS is_weekend
+FROM dates
+ORDER BY date_day
 
 ;
 

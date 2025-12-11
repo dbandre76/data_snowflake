@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS gold_fact_orders (
+CREATE OR REPLACE TABLE gold_fact_orders (
     order_sk BIGINT AUTOINCREMENT PRIMARY KEY,
     order_id VARCHAR(50) NOT NULL,
     customer_sk BIGINT NOT NULL,
