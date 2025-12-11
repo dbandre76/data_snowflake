@@ -48,7 +48,21 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          for file in $MODIFIED_FILES; do
+          # Sort files by layer: bronze → silver → gold, tasks last
+          ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
+              echo "1:$file"
+            elif [[ "$file" == *"/silver/"* ]]; then
+              echo "2:$file"
+            elif [[ "$file" == *"/gold/"* ]]; then
+              echo "3:$file"
+            else
+              echo "0:$file"
+            fi
+          done | sort -t: -k1,1n | cut -d: -f2-)
+          for file in $ORDERED_FILES; do
             echo "Running $file on schema DEV"
             OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s DEV \
@@ -108,7 +122,21 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          for file in $MODIFIED_FILES; do
+          # Sort files by layer: bronze → silver → gold, tasks last
+          ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
+              echo "1:$file"
+            elif [[ "$file" == *"/silver/"* ]]; then
+              echo "2:$file"
+            elif [[ "$file" == *"/gold/"* ]]; then
+              echo "3:$file"
+            else
+              echo "0:$file"
+            fi
+          done | sort -t: -k1,1n | cut -d: -f2-)
+          for file in $ORDERED_FILES; do
             echo "Running $file on schema QA"
             OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s QA \
@@ -167,7 +195,21 @@ jobs:
             echo "No .sql files changed."
             exit 0
           fi
-          for file in $MODIFIED_FILES; do
+          # Sort files by layer: bronze → silver → gold, tasks last
+          ORDERED_FILES=$(echo "$MODIFIED_FILES" | while read file; do
+            if [[ "$file" == *"/tasks/"* ]]; then
+              echo "4:$file"
+            elif [[ "$file" == *"/bronze/"* ]]; then
+              echo "1:$file"
+            elif [[ "$file" == *"/silver/"* ]]; then
+              echo "2:$file"
+            elif [[ "$file" == *"/gold/"* ]]; then
+              echo "3:$file"
+            else
+              echo "0:$file"
+            fi
+          done | sort -t: -k1,1n | cut -d: -f2-)
+          for file in $ORDERED_FILES; do
             echo "Running $file on schema ${{ env.SCHEMA_PRD }}"
             OUTPUT=$(snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER \
               -d POC -s ${{ env.SCHEMA_PRD }} \
