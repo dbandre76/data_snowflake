@@ -6,9 +6,9 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE SILVER_ORDERS;
+    TRUNCATE TABLE silver_orders;
 
-    INSERT INTO SILVER_ORDERS
+    INSERT INTO silver_orders
     SELECT
         $1:"order_id"::NUMBER                AS order_id,
         UPPER($1:"customer_id"::STRING)      AS customer_id,
@@ -22,9 +22,9 @@ BEGIN
         UPPER($1:"ship_address"::STRING)     AS ship_address,
         UPPER($1:"ship_city"::STRING)        AS ship_city,
         UPPER($1:"ship_postal_code"::STRING) AS ship_postal_code,
-        UPPER($1:"ship_country"::STRING)     AS ship_country
+        UPPER($1:"ship_country"::STRING)     AS ship_country,
+        CURRENT_TIMESTAMP()                  AS created_at
 FROM bronze_orders;
-
-    RETURN 'Load Siver Orders table successfully';
+    RETURN 'Load Silver Orders table successfully';
 END;
 $$;

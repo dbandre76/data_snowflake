@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS silver_orders (
   ship_address       STRING,
   ship_city          STRING,
   ship_postal_code   STRING,
-  ship_country       STRING
+  ship_country       STRING,
+  created_at    TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
 );

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE silver_products (
+CREATE TABLE IF NOT EXISTS silver_products (
   product_id         NUMBER,
   product_name       STRING,
   supplier_id        NUMBER,
@@ -8,5 +8,6 @@ CREATE OR REPLACE TABLE silver_products (
   units_in_stock     NUMBER,
   units_on_order     NUMBER,
   reorder_level      NUMBER,
-  discontinued       NUMBER
+  discontinued       NUMBER,
+  created_at         TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
 );

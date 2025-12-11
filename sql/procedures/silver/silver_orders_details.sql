@@ -4,18 +4,19 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    TRUNCATE TABLE SILVER_ORDERS_DETAILS;
+    TRUNCATE TABLE silver_orders_details;
 
-    INSERT INTO SILVER_ORDERS_DETAILS
+    INSERT INTO silver_orders_details
     SELECT
         $1:"order_id"::NUMBER     AS order_id,
         $1:"product_id"::NUMBER   AS product_id,
         $1:"unit_price"::FLOAT    AS unit_price,
         $1:"quantity"::NUMBER     AS quantity,
         $1:"discount"::FLOAT      AS discount,
-        ($1:"quantity"::NUMBER * $1:"unit_price"::FLOAT) AS total
+        ($1:"quantity"::NUMBER * $1:"unit_price"::FLOAT) AS total,
+        CURRENT_TIMESTAMP()       AS created_at
     from bronze_orders_details;
 
-    RETURN 'Load Siver Orders Details table successfully';
-END
+    RETURN 'Load Silver Orders Details table successfully';
+END;
 $$;
