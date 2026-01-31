@@ -4,7 +4,7 @@
 CREATE OR REPLACE PROCEDURE load_all_bronze()
 RETURNS VARCHAR
 LANGUAGE PYTHON
-RUNTIME_VERSION = '3.8'
+RUNTIME_VERSION = '3.9'
 PACKAGES = ('snowflake-snowpark-python')
 HANDLER = 'main'
 AS
