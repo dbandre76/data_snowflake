@@ -10,11 +10,12 @@
 
 -- Criar o Pipe com AUTO_INGEST = TRUE
 -- O Snowflake criará automaticamente a fila SQS e subscreverá no SNS Topic
-CREATE OR REPLACE PIPE PIPE_EXCHANGE_RATES
+
+CREATE OR REPLACE PIPE PIPE_SNS
   AUTO_INGEST = TRUE
-  AWS_SNS_TOPIC = 'arn:aws:sns:eu-west-1:815694509264:snowpipe-exchange-rates-notifications'
+  AWS_SNS_TOPIC = 'arn:aws:sns:eu-west-1:815694509264:sns-snowflake'
   AS   
-  COPY INTO POC.DEV.bronze_exchange_rates (
+  COPY INTO sns_bronze_exchange (
     raw,
     filename,
     created_at
@@ -29,22 +30,4 @@ CREATE OR REPLACE PIPE PIPE_EXCHANGE_RATES
   )
   PATTERN = '.*\\.json$';
 
--- Verificar status do pipe
-SELECT SYSTEM$PIPE_STATUS('PIPE_EXCHANGE_RATES');
-
--- Ver histórico de carregamentos (últimas 24 horas)
-SELECT 
-  PIPE_NAME,
-  FILE_NAME,
-  FILE_SIZE,
-  ROW_COUNT,
-  STATUS,
-  LAST_LOAD_TIME,
-  FIRST_ERROR_MESSAGE AS ERROR_MESSAGE
-FROM TABLE(INFORMATION_SCHEMA.COPY_HISTORY(
-  TABLE_NAME => 'BRONZE_EXCHANGE_RATES',
-  START_TIME => DATEADD('hours', -24, CURRENT_TIMESTAMP())
-))
-WHERE PIPE_NAME = 'PIPE_EXCHANGE_RATES'
-ORDER BY LAST_LOAD_TIME DESC;
 
