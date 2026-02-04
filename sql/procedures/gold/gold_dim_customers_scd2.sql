@@ -6,7 +6,6 @@ $$
 
 BEGIN
 
-    -- SCD Type 2: Maintains historical changes by creating new records
     -- Step 1: UPDATE - Close expired records when data changed
     UPDATE gold_dim_customers_scd2 AS target
     SET 
