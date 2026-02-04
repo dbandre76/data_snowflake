@@ -6,7 +6,7 @@ $$
 
 BEGIN
 
-    -- Step 1: UPDATE - Close expired records when data changed
+    -- Step 1: UPDATE -  Close expired records when data changed
     UPDATE gold_dim_customers_scd2 AS target
     SET 
         target.expiry_date = CURRENT_TIMESTAMP(),
