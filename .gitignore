@@ -50,3 +50,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp 
+
+# Snowflake
+.snowflake/
+connection.toml
