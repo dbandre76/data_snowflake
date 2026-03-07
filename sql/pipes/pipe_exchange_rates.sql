@@ -15,7 +15,7 @@ CREATE OR REPLACE PIPE PIPE_SNS
   AUTO_INGEST = TRUE
   AWS_SNS_TOPIC = 'arn:aws:sns:eu-west-1:815694509264:sns-snowflake'
   AS   
-  COPY INTO sns_bronze_exchange (
+  COPY INTO bronze_exchange_rates (
     raw,
     filename,
     created_at
@@ -29,5 +29,3 @@ CREATE OR REPLACE PIPE PIPE_SNS
       (FILE_FORMAT => 'JSON_FORMAT')
   )
   PATTERN = '.*\\.json$';
-
-
