@@ -1,4 +1,5 @@
 
+-- Proc Bronze Customers
 CREATE OR REPLACE PROCEDURE load_bronze_customers()
 RETURNS STRING
 LANGUAGE SQL

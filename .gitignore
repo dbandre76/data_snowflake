@@ -49,8 +49,13 @@ Thumbs.db
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp
 
-# Snowflake
-.snowflake/
-connection.toml
+# Environment variables
+.env
+.env.local
+.env.*.local 
+
+
+# API
+/API
